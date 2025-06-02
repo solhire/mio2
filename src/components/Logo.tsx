@@ -120,6 +120,33 @@ const Logo: React.FC = () => {
         </div>
         <p className="text-sm text-white mt-2 font-mono tracking-wide text-center">MAKE IT OUT</p>
       </a>
+      
+      {/* X (Twitter) Links */}
+      <div className="flex gap-4 mt-4">
+        <a 
+          href="https://x.com/MakeItOutMIO"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center px-4 py-2 bg-black/50 hover:bg-black/70 rounded-md border border-gray-700 transition-colors"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="white" className="mr-2">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          <span className="text-white text-sm font-mono">Follow $MIO</span>
+        </a>
+        
+        <a 
+          href="https://x.com/i/communities/1929640634526454141"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center px-4 py-2 bg-black/50 hover:bg-black/70 rounded-md border border-gray-700 transition-colors"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="white" className="mr-2">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          <span className="text-white text-sm font-mono">Join Community</span>
+        </a>
+      </div>
     </div>
   );
 };
