@@ -107,7 +107,7 @@ const TypingText: React.FC<TypingTextProps> = ({
     
     // Clean up timeouts
     return () => clearTimeout(timeout);
-  }, [text, typingSpeed, startDelay, hasPlayed, onComplete, messageId]);
+  }, [text, typingSpeed, startDelay, hasPlayed, onComplete, messageId, saveAnimationStatus]);
 
   return (
     <span className={`inline-block ${className}`}>

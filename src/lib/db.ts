@@ -6,7 +6,7 @@ const pool = new Pool({
 });
 
 // Helper function for querying the database
-export async function query(text: string, params?: any[]) {
+export async function query(text: string, params?: Array<string | number | boolean | null>) {
   try {
     const start = Date.now();
     const res = await pool.query(text, params);

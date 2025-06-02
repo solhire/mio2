@@ -94,7 +94,12 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
       let foundNewMessages = false;
       
       // Convert API format to component format
-      const formattedSubmissions: Submission[] = data.map((item: any) => {
+      const formattedSubmissions: Submission[] = data.map((item: {
+        id: string;
+        name: string | null;
+        message: string;
+        created_at: string;
+      }) => {
         const existingSubmission = prevSubmissions.find(s => s.id === item.id);
         
         // If this submission doesn't exist in our current state, mark it as new
@@ -162,7 +167,7 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
     
     // Clean up interval on unmount
     return () => clearInterval(intervalId);
-  }, [refreshInterval]);
+  }, [refreshInterval, fetchSubmissions]);
 
   // Listen for message update events
   useEffect(() => {
@@ -188,7 +193,7 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
       window.removeEventListener(MESSAGE_UPDATED_EVENT, handleMessageUpdated);
       window.removeEventListener(SUBMISSION_COUNT_UPDATED_EVENT, handleCountUpdated);
     };
-  }, []);
+  }, [fetchSubmissions]);
 
   // Auto-scroll to bottom when new messages arrive (but not for user submissions)
   useEffect(() => {

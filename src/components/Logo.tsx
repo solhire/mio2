@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const Logo: React.FC = () => {
   const [heartbeat, setHeartbeat] = useState(false);
@@ -65,7 +64,6 @@ const Logo: React.FC = () => {
       // Heartbeat timing constants - adjusted to match the audio file
       // Adjust these values to fine-tune the synchronization
       const beatInterval = 930; // Time between heartbeats in ms (based on audio)
-      const beatDelay = 0; // Delay to apply to visual beat (negative = earlier, positive = later)
       const beatDuration = 150; // How long each pulse lasts
       
       // Check if it's time for a heartbeat

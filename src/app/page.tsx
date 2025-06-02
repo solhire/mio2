@@ -9,26 +9,9 @@ import DynamicBackground from '../components/DynamicBackground';
 import SubmissionCounter from '../components/SubmissionCounter';
 
 export default function Home() {
-  // Mobile detection for performance optimization
-  const [isMobile, setIsMobile] = useState(false);
-  
   useEffect(() => {
-    // Check if the device is mobile (screen width < 768px)
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Initial check
-    checkMobile();
-    
-    // Listen for resize events
-    window.addEventListener('resize', checkMobile);
-    
     // Log to console for debugging
     console.log('Page component mounted');
-    
-    // Clean up
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   return (

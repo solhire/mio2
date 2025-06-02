@@ -66,7 +66,7 @@ const BinaryReveal: React.FC = () => {
       
       // Add additional emphasized "MAKE IT OUT" messages
       ctx.font = '14px monospace'; // Larger for emphasis
-      for (let i = 0; i < 15; i++) {
+      for (let j = 0; j < 15; j++) {
         const x = Math.random() * (canvas.width - 150);
         const y = Math.random() * canvas.height;
         
@@ -187,7 +187,7 @@ const BinaryReveal: React.FC = () => {
       }
       
       // Draw each trail point
-      trailRef.current.forEach((point, index) => {
+      trailRef.current.forEach((point) => {
         // Make older points smaller
         const size = Math.max(15, 40 - point.age);
         const alpha = 1 - (point.age / 20);
