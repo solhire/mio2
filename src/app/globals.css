@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0A0A;
+  --foreground: #FFFFFF;
+  --accent: #F7931A;
+  --typing-speed: 30ms; /* Base speed for typing animation */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,5 +25,189 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace, Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@layer components {
+  .gritty-text {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Enhanced Dynamic Background Styles */
+
+/* Make sure z-index layers work properly */
+.z-negative {
+  z-index: -1;
+}
+
+/* Ensure particles canvas is visible */
+#tsparticles {
+  position: fixed !important;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -10;
+}
+
+/* Base styling */
+body {
+  background-color: #0A0A0A;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ensure layers are rendered correctly */
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Improve contrast for content */
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/* Enhanced visual effects */
+.glow-text {
+  text-shadow: 0 0 8px var(--accent);
+}
+
+/* Counter-specific styles */
+.text-orange-400 {
+  color: #F7931A;
+}
+
+.glow-text.text-orange-400 {
+  text-shadow: 
+    0 0 10px rgba(247, 147, 26, 0.7),
+    0 0 20px rgba(247, 147, 26, 0.4);
+  animation: pulse-glow 3s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    text-shadow: 
+      0 0 10px rgba(247, 147, 26, 0.7),
+      0 0 20px rgba(247, 147, 26, 0.4);
+  }
+  100% {
+    text-shadow: 
+      0 0 15px rgba(247, 147, 26, 0.9),
+      0 0 30px rgba(247, 147, 26, 0.6);
+  }
+}
+
+/* Subtle flicker animation for cryptic messages */
+@keyframes subtle-flicker {
+  0% { opacity: 0.95; text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+  25% { opacity: 1; text-shadow: 0 0 7px rgba(255, 255, 255, 0.4); }
+  50% { opacity: 0.97; text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+  75% { opacity: 0.99; text-shadow: 0 0 6px rgba(255, 255, 255, 0.35); }
+  100% { opacity: 0.95; text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+
+/* Message Feed Animation Styles */
+
+/* New entry animation */
+.animate-new-entry {
+  animation: new-entry 500ms ease-out forwards, 
+             entry-glow 1200ms ease-out;
+}
+
+@keyframes new-entry {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes entry-glow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 165, 0, 0);
+  }
+  20% {
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 165, 0, 0);
+  }
+}
+
+/* Typing cursor styles */
+.typing-cursor {
+  display: inline-block;
+  width: 0.5em;
+  color: var(--accent);
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 1px;
+  font-weight: bold;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Optional typing effect - simplified version that works with existing text */
+.animate-typing {
+  overflow: hidden;
+  border-right: 2px solid transparent;
+  white-space: nowrap;
+  animation: typing-cursor 1s steps(1) infinite;
+}
+
+@keyframes typing-cursor {
+  0%, 100% {
+    border-right-color: transparent;
+  }
+  50% {
+    border-right-color: var(--accent);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .animate-new-entry {
+    animation-duration: 400ms; /* Faster on mobile */
+  }
+}
+
+.accent-border {
+  border-color: var(--accent);
+}
+
+/* Ensure animations run smoothly */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+
+/* Force hardware acceleration for animations */
+.hw-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
