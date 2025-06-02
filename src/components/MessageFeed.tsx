@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MESSAGE_UPDATED_EVENT, SUBMISSION_COUNT_UPDATED_EVENT } from './InputForm';
 import TypingText from './TypingText';
 
@@ -53,22 +53,22 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
   }, [animatedMessages]);
 
   // Save scroll position before fetching new messages
-  const saveScrollPosition = () => {
+  const saveScrollPosition = useCallback(() => {
     if (containerRef.current) {
       scrollPositionRef.current = containerRef.current.scrollTop;
     }
-  };
+  }, []);
 
   // Restore scroll position after rendering new messages
-  const restoreScrollPosition = () => {
+  const restoreScrollPosition = useCallback(() => {
     if (containerRef.current && scrollPositionRef.current !== null) {
       containerRef.current.scrollTop = scrollPositionRef.current;
       scrollPositionRef.current = null;
     }
-  };
+  }, []);
 
   // Function to fetch submissions
-  const fetchSubmissions = async (isUserAction = false) => {
+  const fetchSubmissions = useCallback(async (isUserAction = false) => {
     try {
       // Save scroll position if this is a user action
       if (isUserAction) {
@@ -147,13 +147,13 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
         setTimeout(restoreScrollPosition, 100);
       }
     }
-  };
+  }, [submissions, animatedMessages, saveScrollPosition, restoreScrollPosition]);
 
   // Initial fetch
   useEffect(() => {
     // Treat initial fetch as a user action to maintain scroll position
     fetchSubmissions(true);
-  }, []);
+  }, [fetchSubmissions]);
 
   // Set up periodic refresh
   useEffect(() => {
@@ -193,7 +193,7 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
       window.removeEventListener(MESSAGE_UPDATED_EVENT, handleMessageUpdated);
       window.removeEventListener(SUBMISSION_COUNT_UPDATED_EVENT, handleCountUpdated);
     };
-  }, [fetchSubmissions]);
+  }, [fetchSubmissions, saveScrollPosition]);
 
   // Auto-scroll to bottom when new messages arrive (but not for user submissions)
   useEffect(() => {

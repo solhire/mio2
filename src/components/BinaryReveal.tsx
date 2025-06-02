@@ -77,7 +77,7 @@ const BinaryReveal: React.FC = () => {
       
       // Add some medium-sized "codeyourlife" messages
       ctx.font = '11px monospace';
-      for (let i = 0; i < 20; i++) {
+      for (let _ = 0; _ < 20; _++) {
         const x = Math.random() * (canvas.width - 120);
         const y = Math.random() * canvas.height;
         
@@ -88,7 +88,7 @@ const BinaryReveal: React.FC = () => {
       
       // Add random individual messages in various positions
       ctx.font = '10px monospace';
-      for (let i = 0; i < 50; i++) {
+      for (let _ = 0; _ < 50; _++) {
         const message = messages[Math.floor(Math.random() * messages.length)];
         const x = Math.random() * (canvas.width - message.length * 10);
         const y = Math.random() * canvas.height;
@@ -103,7 +103,7 @@ const BinaryReveal: React.FC = () => {
       // Add some binary code flow around the text
       ctx.font = '8px monospace';
       ctx.globalAlpha = 0.7;
-      for (let i = 0; i < 2000; i++) {
+      for (let _ = 0; _ < 2000; _++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
         
@@ -172,7 +172,7 @@ const BinaryReveal: React.FC = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Update trail ages
-      trailRef.current.forEach((point, i) => {
+      trailRef.current.forEach((point) => {
         point.age += 1;
       });
       

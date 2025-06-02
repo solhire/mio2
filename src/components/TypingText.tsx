@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface TypingTextProps {
   text: string;
@@ -39,14 +39,14 @@ const TypingText: React.FC<TypingTextProps> = ({
   };
 
   // Save animation status to localStorage
-  const saveAnimationStatus = () => {
+  const saveAnimationStatus = useCallback(() => {
     if (!messageId) return;
     try {
       localStorage.setItem(`${TYPING_ANIMATION_KEY_PREFIX}${messageId}`, 'true');
     } catch (err) {
       console.error('Error writing to localStorage:', err);
     }
-  };
+  }, [messageId]);
 
   // Check if animation has already been played
   const hasPlayed = messageId ? getAnimationStatus() : hasCompletedRef.current;

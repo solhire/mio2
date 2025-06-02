@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Logo from '../components/Logo';
 import InputForm from '../components/InputForm';
 import MessageFeed from '../components/MessageFeed';
