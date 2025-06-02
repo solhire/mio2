@@ -16,8 +16,14 @@ export const metadata: Metadata = {
   title: "$MIO - Make It Out",
   description: "Survival, struggle, and breaking free. Join the $MIO community.",
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/favicon.png' },
+      { url: '/favicon.ico' }
+    ],
+    apple: [
+      { url: '/favicon.png' }
+    ],
+    shortcut: '/favicon.png',
   },
 };
 
