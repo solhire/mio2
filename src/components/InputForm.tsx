@@ -27,6 +27,25 @@ const CRYPTIC_MESSAGES = [
   "Witnessed."
 ];
 
+// Function to play a random glitch sound
+const playRandomGlitchSound = () => {
+  // Generate random number between 1 and 4
+  const soundNumber = Math.floor(Math.random() * 4) + 1;
+  const audio = new Audio(`/glitch/${soundNumber}.mp3`);
+  audio.play().catch(err => console.error('Error playing glitch sound:', err));
+};
+
+// Function to play Mio sound after glitch sound
+const playMioSound = () => {
+  // Randomly choose between mio.wav and mio2.wav
+  const mioSound = Math.random() < 0.5 ? 'mio.wav' : 'mio2.wav';
+  const audio = new Audio(`/${mioSound}`);
+  return { 
+    sound: mioSound,
+    play: () => audio.play().catch(err => console.error(`Error playing ${mioSound}:`, err))
+  };
+};
+
 const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
@@ -34,6 +53,8 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [mioMessage, setMioMessage] = useState<string | null>(null);
+  const [isMioMessageVisible, setIsMioMessageVisible] = useState(false);
 
   // Clear confirmation message after delay
   useEffect(() => {
@@ -58,6 +79,30 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
       };
     }
   }, [confirmationMessage]);
+
+  // Handle Mio message visibility
+  useEffect(() => {
+    if (mioMessage) {
+      // Show the message with fade-in effect
+      setIsMioMessageVisible(true);
+      
+      // Set timeout to start fade-out
+      const fadeOutTimer = setTimeout(() => {
+        setIsMioMessageVisible(false);
+      }, 6000);
+      
+      // Set timeout to clear the message after fade-out completes
+      const clearTimer = setTimeout(() => {
+        setMioMessage(null);
+      }, 7000);
+      
+      // Clean up timers
+      return () => {
+        clearTimeout(fadeOutTimer);
+        clearTimeout(clearTimer);
+      };
+    }
+  }, [mioMessage]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,6 +137,22 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to submit message');
       }
+      
+      // Play a random glitch sound
+      playRandomGlitchSound();
+      
+      // Set timeout to play Mio sound after the glitch sound
+      setTimeout(() => {
+        const mio = playMioSound();
+        mio.play();
+        
+        // Set different caption based on which sound played
+        if (mio.sound === 'mio.wav') {
+          setMioMessage("You have been marked. The wall accepts your entry.");
+        } else {
+          setMioMessage("Submission received. One more trying to make it out.");
+        }
+      }, 1500);
       
       // Clear form on success
       setName('');
@@ -162,6 +223,21 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
             }}
           >
             {confirmationMessage}
+          </div>
+        )}
+        
+        {/* Mio message */}
+        {mioMessage && (
+          <div 
+            className={`mt-6 font-mono text-cyan-300 text-sm text-center transition-opacity duration-1500 ${
+              isMioMessageVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ 
+              textShadow: '0 0 8px rgba(0, 255, 255, 0.6)',
+              animation: isMioMessageVisible ? 'subtle-pulse 4s infinite' : 'none'
+            }}
+          >
+            {mioMessage}
           </div>
         )}
       </form>
