@@ -32,11 +32,15 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
   const scrollPositionRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Initialize animatedMessages from localStorage
+  // Initialize animatedMessages from localStorage (with safety check for SSR)
   const [animatedMessages, setAnimatedMessages] = useState<Set<string>>(() => {
     try {
-      const saved = localStorage.getItem(ANIMATED_MESSAGES_KEY);
-      return saved ? new Set(JSON.parse(saved)) : new Set<string>();
+      // Check if localStorage is available (won't be during SSR)
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = localStorage.getItem(ANIMATED_MESSAGES_KEY);
+        return saved ? new Set(JSON.parse(saved)) : new Set<string>();
+      }
+      return new Set<string>();
     } catch (err) {
       console.error('Error loading animated messages from localStorage:', err);
       return new Set<string>();
@@ -46,7 +50,10 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
   // Persist animatedMessages to localStorage whenever it changes
   useEffect(() => {
     try {
-      localStorage.setItem(ANIMATED_MESSAGES_KEY, JSON.stringify([...animatedMessages]));
+      // Check if localStorage is available
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(ANIMATED_MESSAGES_KEY, JSON.stringify([...animatedMessages]));
+      }
     } catch (err) {
       console.error('Error saving animated messages to localStorage:', err);
     }
@@ -226,55 +233,78 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
 
   return (
     <div className="w-full max-w-2xl mx-auto mt-8">
-      <div className="bg-[#121212] border border-[#333333] rounded-md overflow-hidden">
+      <div className="overflow-hidden">
+        <div className="flex items-center justify-between mb-2 px-2">
+          <div className="text-[var(--matrix-text)] font-mono text-sm">
+            <span className="opacity-70">SYSTEM LOG</span>
+          </div>
+          <div className="text-[var(--matrix-text-muted)] font-mono text-xs">
+            {loading ? 'CONNECTING...' : 'CONNECTED'}
+          </div>
+        </div>
+        
         <div 
           ref={containerRef}
-          className="max-h-[400px] overflow-y-auto p-4"
+          className="max-h-[400px] overflow-y-auto p-4 bg-black/60 border border-[var(--matrix-text-muted)]"
+          style={{
+            boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.5)',
+          }}
         >
           {loading && submissions.length === 0 ? (
-            <p className="text-gray-500 text-center font-mono">Loading messages...</p>
+            <p className="text-[var(--matrix-text-muted)] text-center font-mono">
+              <span className="typing-cursor">▌</span> LOADING DATA...
+            </p>
           ) : error ? (
-            <p className="text-red-400 text-center font-mono">{error}</p>
+            <p className="text-[var(--matrix-accent)] text-center font-mono">ERROR: {error}</p>
           ) : submissions.length === 0 ? (
-            <p className="text-gray-500 text-center font-mono">No messages yet. Be the first to share.</p>
+            <p className="text-[var(--matrix-text-muted)] text-center font-mono">NO ENTRIES FOUND. BE THE FIRST TO TRANSMIT.</p>
           ) : (
-            <ul className="space-y-4">
+            <ul className="space-y-2">
               {submissions.map((submission) => {
                 const hasBeenAnimated = animatedMessages.has(submission.id);
+                const timestamp = new Date(submission.timestamp);
+                const timeString = `${String(timestamp.getHours()).padStart(2, '0')}:${String(timestamp.getMinutes()).padStart(2, '0')}:${String(timestamp.getSeconds()).padStart(2, '0')}`;
+                
                 return (
                   <li 
                     key={submission.id} 
-                    className={`p-3 bg-[#1A1A1A] rounded-md border-l-4 border-[#F7931A] font-mono text-white
+                    className={`py-2 px-1 border-b border-[var(--matrix-text-muted)]/20 font-mono text-[var(--matrix-text)]
                       ${submission.isNew && !isUserSubmission ? 'animate-new-entry' : ''}
                     `}
                   >
-                    <div className="font-bold text-[#F7931A]">
-                      {submission.isNew && !hasBeenAnimated && !isUserSubmission ? (
-                        <TypingText 
-                          text={`${submission.name || "Anonymous"} →`} 
-                          typingSpeed={20}
-                          onComplete={() => handleAnimationComplete(submission.id)}
-                          messageId={`name-${submission.id}`}
-                        />
-                      ) : (
-                        `${submission.name || "Anonymous"} →`
-                      )}
-                    </div>
-                    <div className="mt-1">
-                      {shouldUseTypingEffect(submission) && !isUserSubmission ? (
-                        <TypingText 
-                          text={submission.message} 
-                          typingSpeed={25}
-                          startDelay={300}
-                          onComplete={() => handleAnimationComplete(submission.id)}
-                          messageId={`message-${submission.id}`}
-                        />
-                      ) : (
-                        submission.message
-                      )}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-2">
-                      {new Date(submission.timestamp).toLocaleString()}
+                    <div className="flex items-start">
+                      <span className="text-[var(--matrix-text-muted)] mr-2">&gt;&gt;</span>
+                      <div className="flex-1">
+                        <div className="flex items-center">
+                          <span className="text-[var(--matrix-text-muted)] text-xs mr-2">[{timeString}]</span>
+                          <span className="font-bold">
+                            {submission.isNew && !hasBeenAnimated && !isUserSubmission ? (
+                              <TypingText 
+                                text={`${submission.name || "Anonymous"}`} 
+                                typingSpeed={20}
+                                onComplete={() => handleAnimationComplete(submission.id)}
+                                messageId={`name-${submission.id}`}
+                              />
+                            ) : (
+                              submission.name || "Anonymous"
+                            )}
+                          </span>
+                          <span className="text-[var(--matrix-text-muted)] mx-1">:</span>
+                        </div>
+                        <div className="mt-1 pl-4">
+                          {shouldUseTypingEffect(submission) && !isUserSubmission ? (
+                            <TypingText 
+                              text={submission.message} 
+                              typingSpeed={25}
+                              startDelay={300}
+                              onComplete={() => handleAnimationComplete(submission.id)}
+                              messageId={`message-${submission.id}`}
+                            />
+                          ) : (
+                            submission.message
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </li>
                 );

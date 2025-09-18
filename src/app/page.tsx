@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import Logo from '../components/Logo';
+import ASCIILogo from '../components/ASCIILogo';
 import InputForm from '../components/InputForm';
 import MessageFeed from '../components/MessageFeed';
 import BinaryReveal from '../components/BinaryReveal';
 import DynamicBackground from '../components/DynamicBackground';
 import SubmissionCounter from '../components/SubmissionCounter';
+import CursorTrail from '../components/CursorTrail';
 
 export default function Home() {
   useEffect(() => {
@@ -24,21 +25,24 @@ export default function Home() {
         <BinaryReveal />
       </div>
       
+      {/* Cursor trail effect */}
+      <CursorTrail />
+      
       {/* Content layer with proper z-index */}
       <div className="relative z-10 min-h-screen py-12 px-4">
         <main className="max-w-4xl mx-auto flex flex-col items-center justify-start gap-12">
           <div className="mt-8">
-            <Logo />
+            <ASCIILogo />
           </div>
           
           {/* Submission counter */}
           <SubmissionCounter />
           
-          <div className="w-full backdrop-blur-sm bg-black/30 p-6 rounded-lg shadow-[0_0_25px_rgba(0,0,0,0.5)]">
+          <div className="w-full terminal-container">
             <InputForm />
           </div>
           
-          <div className="w-full backdrop-blur-sm bg-black/30 p-4 rounded-lg shadow-[0_0_25px_rgba(0,0,0,0.5)]">
+          <div className="w-full terminal-container">
             <MessageFeed refreshInterval={5000} />
           </div>
         </main>

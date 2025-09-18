@@ -3,9 +3,18 @@ import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
 import type { Engine } from "tsparticles-engine";
 
+// For debugging
+console.log('ParticlesBackground module loaded');
+
 const ParticlesBackground = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+    console.log('ParticlesBackground init called');
+    try {
+      await loadSlim(engine);
+      console.log('ParticlesBackground loadSlim completed');
+    } catch (error) {
+      console.error('ParticlesBackground init error:', error);
+    }
   }, []);
 
   useEffect(() => {
@@ -32,7 +41,7 @@ const ParticlesBackground = () => {
             }
           },
           color: {
-            value: ["rgba(247, 147, 26, 0.5)", "rgba(255, 255, 255, 0.2)"]
+            value: ["rgba(0, 255, 123, 0.5)", "rgba(103, 178, 111, 0.3)"]
           },
           shape: {
             type: "circle"
@@ -91,7 +100,8 @@ const ParticlesBackground = () => {
               size: 8,
               duration: 2,
               opacity: 0.8,
-              speed: 3
+              speed: 3,
+              color: "rgba(0, 255, 123, 0.8)"
             },
             push: {
               particles_nb: 4

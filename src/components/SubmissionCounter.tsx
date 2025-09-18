@@ -77,15 +77,15 @@ const SubmissionCounter: React.FC = () => {
 
   return (
     <div className="text-center mb-8 mt-4">
-      <div className="inline-block py-2 px-6 bg-black/40 backdrop-blur-sm rounded-full">
+      <div className="inline-block py-2 px-6 bg-black/60 border border-[var(--matrix-text-muted)] backdrop-blur-sm">
         <p className="font-mono text-lg">
-          <span className="text-gray-300">💬</span>
+          <span className="text-[var(--matrix-text-muted)]">SYSTEM LOG:</span>
           {' '}
-          <span className="font-bold text-orange-400 glow-text">
+          <span className="font-bold text-matrix glow-text">
             {loading ? '...' : displayCount.toLocaleString()}
           </span>
           {' '}
-          <span className="text-gray-300">people want to make it out</span>
+          <span className="text-[var(--matrix-text-muted)]">PEOPLE TRYING TO MAKE IT THROUGH</span>
         </p>
       </div>
     </div>

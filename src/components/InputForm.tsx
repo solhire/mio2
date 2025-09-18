@@ -150,7 +150,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
         if (mio.sound === 'mio.wav') {
           setMioMessage("You have been marked. The wall accepts your entry.");
         } else {
-          setMioMessage("Submission received. One more trying to make it out.");
+          setMioMessage("Submission received. One more trying to make it through.");
         }
       }, 1500);
       
@@ -175,74 +175,82 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <h2 className="text-xl text-white text-center mb-4 font-mono">
-        Why do you want to make it out?
+      <h2 className="text-xl text-[var(--matrix-text)] text-center mb-4 font-mono matrix-header">
+        Why are you trying to make it through?
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        <div className="terminal-prompt">
+          <label htmlFor="name-input" className="block text-[var(--matrix-text-muted)] text-sm mb-1 font-mono">
+            enter name:
+          </label>
           <input
+            id="name-input"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full bg-[#1A1A1A] border border-[#333333] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931A] focus:border-transparent font-mono"
-            placeholder="Your name (optional)"
+            className="w-full terminal-input rounded-sm"
+            placeholder="anonymous"
             disabled={isSubmitting}
           />
         </div>
-        <div>
+        <div className="terminal-prompt">
+          <label htmlFor="message-input" className="block text-[var(--matrix-text-muted)] text-sm mb-1 font-mono">
+            enter message:
+          </label>
           <textarea
+            id="message-input"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={3}
-            className="w-full bg-[#1A1A1A] border border-[#333333] text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#F7931A] focus:border-transparent font-mono resize-none"
-            placeholder="Your message (required)"
+            className="w-full terminal-input rounded-sm resize-none"
+            placeholder="why are you trying to make it through?"
             disabled={isSubmitting}
           />
         </div>
         <div className="flex justify-end">
           <button
             type="submit"
-            className={`bg-[#F7931A] hover:bg-[#F7931A]/80 text-black font-bold py-2 px-6 rounded-md transition-colors font-mono ${
+            className={`terminal-button ${
               isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Sending...' : 'Submit'}
+            {isSubmitting ? 'PROCESSING...' : 'TRANSMIT'}
           </button>
         </div>
         
         {/* Cryptic confirmation message */}
         {confirmationMessage && (
           <div 
-            className={`mt-4 ml-4 font-mono text-gray-300 text-sm transition-opacity duration-1000 ${
+            className={`mt-4 ml-4 font-mono text-[var(--matrix-text-muted)] text-sm transition-opacity duration-1000 ${
               isConfirmationVisible ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ 
-              textShadow: '0 0 5px rgba(255, 255, 255, 0.3)',
+              textShadow: 'var(--matrix-glow)',
               animation: isConfirmationVisible ? 'subtle-flicker 3s infinite' : 'none'
             }}
           >
-            {confirmationMessage}
+            &gt; {confirmationMessage}
           </div>
         )}
         
         {/* Mio message */}
         {mioMessage && (
           <div 
-            className={`mt-6 font-mono text-cyan-300 text-sm text-center transition-opacity duration-1500 ${
+            className={`mt-6 font-mono text-[var(--matrix-text)] text-sm text-center transition-opacity duration-1500 ${
               isMioMessageVisible ? 'opacity-100' : 'opacity-0'
             }`}
             style={{ 
-              textShadow: '0 0 8px rgba(0, 255, 255, 0.6)',
-              animation: isMioMessageVisible ? 'subtle-pulse 4s infinite' : 'none'
+              textShadow: 'var(--matrix-glow)',
+              animation: isMioMessageVisible ? 'flicker 4s infinite' : 'none'
             }}
           >
-            {mioMessage}
+            SYSTEM: {mioMessage}
           </div>
         )}
       </form>
       {error && (
-        <p className="text-red-400 text-sm mt-2 font-mono">{error}</p>
+        <p className="text-[var(--matrix-accent)] text-sm mt-2 font-mono">ERROR: {error}</p>
       )}
     </div>
   );

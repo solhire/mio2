@@ -18,7 +18,7 @@ const GlitchEffect: React.FC<GlitchEffectProps> = ({ className = '' }) => {
         style={{
           animation: 'glitch-top-left 5s infinite',
           opacity: 0,
-          backgroundImage: 'linear-gradient(135deg, rgba(247, 147, 26, 0.4), transparent 70%)',
+          backgroundImage: 'linear-gradient(135deg, rgba(0, 255, 123, 0.4), transparent 70%)',
         }}
       />
       
@@ -28,13 +28,13 @@ const GlitchEffect: React.FC<GlitchEffectProps> = ({ className = '' }) => {
         style={{
           animation: 'glitch-bottom-right 7s infinite',
           opacity: 0,
-          backgroundImage: 'linear-gradient(315deg, rgba(247, 147, 26, 0.4), transparent 70%)',
+          backgroundImage: 'linear-gradient(315deg, rgba(0, 255, 123, 0.4), transparent 70%)',
         }}
       />
       
       {/* Horizontal scanline */}
       <div 
-        className={`fixed left-0 w-full h-[3px] pointer-events-none bg-[rgba(255,255,255,0.25)] ${className}`}
+        className={`fixed left-0 w-full h-[3px] pointer-events-none bg-[rgba(0,255,123,0.25)] ${className}`}
         style={{
           animation: 'scanline 5s infinite linear',
           top: '50%',
@@ -43,7 +43,7 @@ const GlitchEffect: React.FC<GlitchEffectProps> = ({ className = '' }) => {
       
       {/* Additional vertical scanline */}
       <div 
-        className={`fixed top-0 h-full w-[2px] pointer-events-none bg-[rgba(247,147,26,0.2)] ${className}`}
+        className={`fixed top-0 h-full w-[2px] pointer-events-none bg-[rgba(0,255,123,0.2)] ${className}`}
         style={{
           animation: 'scanline-vertical 8s infinite linear',
           left: '30%',
@@ -52,12 +52,27 @@ const GlitchEffect: React.FC<GlitchEffectProps> = ({ className = '' }) => {
       
       {/* Full screen flash glitch */}
       <div 
-        className={`fixed inset-0 pointer-events-none bg-[rgba(247,147,26,0.03)] ${className}`}
+        className={`fixed inset-0 pointer-events-none bg-[rgba(255,0,110,0.03)] ${className}`}
         style={{
           animation: 'full-screen-glitch 15s infinite',
           mixBlendMode: 'overlay',
         }}
       />
+      
+      {/* Error glitch - occasionally appears and disappears */}
+      <div 
+        className={`fixed top-[30%] left-[10%] pointer-events-none ${className}`}
+        style={{
+          animation: 'error-glitch 20s infinite',
+          opacity: 0,
+          fontFamily: 'monospace',
+          color: 'var(--matrix-accent)',
+          textShadow: '0 0 5px rgba(255, 0, 110, 0.7)',
+          fontSize: '14px',
+        }}
+      >
+        ERROR: SYSTEM BREACH DETECTED
+      </div>
       
       {/* CSS Animations for the glitch effects */}
       <style jsx>{`
@@ -172,6 +187,25 @@ const GlitchEffect: React.FC<GlitchEffectProps> = ({ className = '' }) => {
           }
           98.5% {
             opacity: 0.25;
+          }
+        }
+        
+        @keyframes error-glitch {
+          0%, 92%, 100% {
+            opacity: 0;
+          }
+          92.5%, 93.5% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+          93%, 94% {
+            transform: translateX(2px);
+          }
+          94.5%, 95% {
+            transform: translateX(-2px);
+          }
+          95.5% {
+            opacity: 0;
           }
         }
       `}</style>

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "$MIO - Make It Out",
-  description: "Survival, struggle, and breaking free. Join the $MIO community.",
+  title: "$MIT - Make It Through",
+  description: "Survival, struggle, and breaking through. Join the $MIT community.",
   icons: {
     icon: [
       { url: '/favicon.png' },
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0A0A0A]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black hw-accelerated`}
       >
         {children}
       </body>
