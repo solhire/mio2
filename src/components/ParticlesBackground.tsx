@@ -1,30 +1,24 @@
-import { useCallback, useEffect } from "react";
-import Particles from "@tsparticles/react";
+import { useEffect } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import type { Engine } from "@tsparticles/engine";
 
 // For debugging
 console.log('ParticlesBackground module loaded');
 
 const ParticlesBackground = () => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    console.log('ParticlesBackground init called');
-    try {
-      await loadSlim(engine);
-      console.log('ParticlesBackground loadSlim completed');
-    } catch (error) {
-      console.error('ParticlesBackground init error:', error);
-    }
-  }, []);
-
   useEffect(() => {
     console.log('ParticlesBackground mounted');
+    // initialize tsParticles engine with the slim bundle once
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).catch((err) => {
+      console.error('initParticlesEngine error:', err);
+    });
   }, []);
 
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
       className="fixed inset-0 -z-10"
       options={({
         fullScreen: {
@@ -37,7 +31,8 @@ const ParticlesBackground = () => {
             value: 80,
             density: {
               enable: true,
-              area: 800
+              width: 1000,
+              height: 800
             }
           },
           color: {
@@ -47,22 +42,18 @@ const ParticlesBackground = () => {
             type: "circle"
           },
           opacity: {
-            value: 0.8,
-            random: true,
-            anim: {
+            value: { min: 0.4, max: 0.8 },
+            animation: {
               enable: true,
               speed: 0.3,
-              opacity_min: 0.4,
               sync: false
             }
           },
           size: {
-            value: 5,
-            random: true,
-            anim: {
+            value: { min: 1, max: 5 },
+            animation: {
               enable: true,
               speed: 1,
-              size_min: 1,
               sync: false
             }
           },
@@ -72,51 +63,42 @@ const ParticlesBackground = () => {
             direction: "none",
             random: true,
             straight: false,
-            outMode: "out",
-            bounce: false,
-            attract: {
-              enable: false,
-              rotateX: 600,
-              rotateY: 1200
+            outModes: {
+              default: "out"
             }
           }
         },
         interactivity: {
           detectsOn: "canvas",
           events: {
-            onhover: {
+            onHover: {
               enable: true,
               mode: "bubble"
             },
-            onclick: {
+            onClick: {
               enable: true,
               mode: "push"
             },
-            resize: true
+            resize: {
+              enable: true
+            }
           },
           modes: {
             bubble: {
               distance: 150,
               size: 8,
               duration: 2,
-              opacity: 0.8,
-              speed: 3,
-              color: "rgba(0, 255, 123, 0.8)"
+              opacity: 0.8
             },
             push: {
-              count: 4
+              quantity: 4
             }
           }
         },
-        retina_detect: true,
-        backgroundMask: {
-          enable: false
-        },
+        detectRetina: true,
         background: {
           color: "transparent"
-        },
-        detectRetina: true
-      // @ts-expect-error - tsParticles type definitions don't match the actual API
+        }
       })}
     />
   );
