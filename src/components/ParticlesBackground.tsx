@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
-import Particles from "react-tsparticles";
-import { loadSlim } from "tsparticles-slim";
-import type { Engine } from "tsparticles-engine";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { Engine } from "@tsparticles/engine";
 
 // For debugging
 console.log('ParticlesBackground module loaded');
