@@ -142,7 +142,7 @@ const MatrixBackground: React.FC = () => {
           if (y < 0 || y > canvas.height) continue;
           
           // Calculate opacity based on position (head is brightest)
-          let opacity = 1 - (i / drop.length);
+          const opacity = 1 - (i / drop.length);
           
           // First character (head) is brighter
           if (i === 0) {

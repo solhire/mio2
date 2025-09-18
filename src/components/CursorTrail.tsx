@@ -92,7 +92,7 @@ const CursorTrail: React.FC<CursorTrailProps> = ({
       }
       
       // Update trail points
-      trailPointsRef.current.forEach((point, index) => {
+      trailPointsRef.current.forEach((point) => {
         point.age += 1;
         
         // Calculate opacity based on age
