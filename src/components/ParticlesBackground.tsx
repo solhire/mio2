@@ -116,7 +116,8 @@ const ParticlesBackground = () => {
           color: "transparent"
         },
         detectRetina: true
-      } as any)}
+      // @ts-expect-error - tsParticles type definitions don't match the actual API
+      })}
     />
   );
 };
