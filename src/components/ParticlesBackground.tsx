@@ -72,7 +72,7 @@ const ParticlesBackground = () => {
             direction: "none",
             random: true,
             straight: false,
-            out_mode: "out",
+            outMode: "out",
             bounce: false,
             attract: {
               enable: false,
@@ -82,7 +82,7 @@ const ParticlesBackground = () => {
           }
         },
         interactivity: {
-          detect_on: "canvas",
+          detectsOn: "canvas",
           events: {
             onhover: {
               enable: true,
@@ -104,7 +104,7 @@ const ParticlesBackground = () => {
               color: "rgba(0, 255, 123, 0.8)"
             },
             push: {
-              particles_nb: 4
+              count: 4
             }
           }
         },
