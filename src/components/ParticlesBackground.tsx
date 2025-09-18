@@ -26,7 +26,7 @@ const ParticlesBackground = () => {
       id="tsparticles"
       init={particlesInit}
       className="fixed inset-0 -z-10"
-      options={{
+      options={({
         fullScreen: {
           enable: false,
           zIndex: -1
@@ -116,7 +116,7 @@ const ParticlesBackground = () => {
           color: "transparent"
         },
         detectRetina: true
-      }}
+      } as any)}
     />
   );
 };
