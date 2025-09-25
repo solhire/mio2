@@ -22,7 +22,7 @@ const ASCIILogo: React.FC<ASCIILogoProps> = ({ className = '' }) => {
   return (
     <div className={`flex flex-col items-center ${className}`}>
         <a 
-          href="https://pump.fun/profile/mit?include-nsfw=true"
+          href="https://pump.fun/profile/m%CE%B9%CF%84"
         target="_blank"
         rel="noopener noreferrer"
         className="cursor-pointer transition-opacity hover:opacity-80"

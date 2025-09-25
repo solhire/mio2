@@ -4,6 +4,9 @@ import { query } from '@/lib/db';
 // GET /api/messages - Fetch recent messages from submissions table
 export async function GET() {
   try {
+    // Ensure wallet column exists for older databases
+    await query('ALTER TABLE submissions ADD COLUMN IF NOT EXISTS wallet TEXT');
+
     const result = await query(
       'SELECT id, name, message, wallet, created_at FROM submissions ORDER BY created_at DESC LIMIT 50'
     );

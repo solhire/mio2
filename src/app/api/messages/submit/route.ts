@@ -5,6 +5,9 @@ import { query } from '@/lib/db';
 export async function POST(request: Request) {
   try {
     const { name, message, wallet } = await request.json();
+
+    // Ensure wallet column exists for older databases
+    await query('ALTER TABLE submissions ADD COLUMN IF NOT EXISTS wallet TEXT');
     
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json(

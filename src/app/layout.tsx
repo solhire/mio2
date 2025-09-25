@@ -37,6 +37,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black hw-accelerated`}
       >
+        <a
+          href="https://pump.fun/profile/m%CE%B9%CF%84"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed top-3 right-3 z-50 text-[var(--matrix-text)]/80 hover:text-[var(--matrix-text)] font-mono text-xs border border-[var(--matrix-text-muted)]/40 px-2 py-1 rounded-sm bg-black/40 backdrop-blur-sm"
+        >
+          pump.fun
+        </a>
         {children}
       </body>
     </html>
