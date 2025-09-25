@@ -19,6 +19,18 @@ export async function POST(request: Request) {
     // Ensure name is either null or a string
     const sanitizedName = name && typeof name === 'string' ? name.trim() : null;
     const sanitizedWallet = wallet && typeof wallet === 'string' ? wallet.trim() : null;
+
+    // Block specific name or wallet values
+    const BLOCKED_NAME = 'MIT';
+    const BLOCKED_WALLET = 'BtDAMNtaG7XsVQkfh2sJiCLt7q6tPYVoqGkAh2bEKVam';
+    const isBlockedName = !!sanitizedName && sanitizedName.toUpperCase() === BLOCKED_NAME;
+    const isBlockedWallet = !!sanitizedWallet && sanitizedWallet === BLOCKED_WALLET;
+    if (isBlockedName || isBlockedWallet) {
+      return NextResponse.json(
+        { error: 'Submission blocked: Invalid name or wallet address.' },
+        { status: 400 }
+      );
+    }
     
     // Insert the submission into the database
     const result = await query(
