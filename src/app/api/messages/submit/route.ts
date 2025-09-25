@@ -4,7 +4,7 @@ import { query } from '@/lib/db';
 // POST /api/messages/submit - Create a new submission with name and message
 export async function POST(request: Request) {
   try {
-    const { name, message } = await request.json();
+    const { name, message, wallet } = await request.json();
     
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json(
@@ -15,11 +15,12 @@ export async function POST(request: Request) {
     
     // Ensure name is either null or a string
     const sanitizedName = name && typeof name === 'string' ? name.trim() : null;
+    const sanitizedWallet = wallet && typeof wallet === 'string' ? wallet.trim() : null;
     
     // Insert the submission into the database
     const result = await query(
-      'INSERT INTO submissions (name, message, created_at) VALUES ($1, $2, NOW()) RETURNING *',
-      [sanitizedName, message.trim()]
+      'INSERT INTO submissions (name, message, wallet, created_at) VALUES ($1, $2, $3, NOW()) RETURNING *',
+      [sanitizedName, message.trim(), sanitizedWallet]
     );
     
     return NextResponse.json({

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MESSAGE_UPDATED_EVENT, SUBMISSION_COUNT_UPDATED_EVENT } from './InputForm';
 import TypingText from './TypingText';
@@ -6,6 +8,7 @@ interface Submission {
   id: string;
   name: string | null;
   message: string;
+  wallet?: string | null;
   created_at: string;
   timestamp: number;
   isNew?: boolean; // Flag to track new submissions
@@ -105,6 +108,7 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
         id: string;
         name: string | null;
         message: string;
+        wallet?: string | null;
         created_at: string;
       }) => {
         const existingSubmission = prevSubmissions.find(s => s.id === item.id);
@@ -121,6 +125,7 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
           id: item.id,
           name: item.name,
           message: item.message,
+          wallet: item.wallet ?? null,
           created_at: item.created_at,
           timestamp: new Date(item.created_at).getTime(),
           isNew
@@ -303,6 +308,11 @@ const MessageFeed: React.FC<MessageFeedProps> = ({
                           ) : (
                             submission.message
                           )}
+                          {submission.wallet ? (
+                            <div className="mt-1 text-[var(--matrix-text-muted)] text-xs break-all">
+                              wallet: {submission.wallet}
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </div>

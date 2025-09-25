@@ -5,7 +5,7 @@ import { query } from '@/lib/db';
 export async function GET() {
   try {
     const result = await query(
-      'SELECT id, name, message, created_at FROM submissions ORDER BY created_at DESC LIMIT 50'
+      'SELECT id, name, message, wallet, created_at FROM submissions ORDER BY created_at DESC LIMIT 50'
     );
     return NextResponse.json(result.rows);
   } catch (error) {

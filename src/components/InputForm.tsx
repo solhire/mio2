@@ -49,6 +49,7 @@ const playMioSound = () => {
 const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [wallet, setWallet] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
@@ -128,8 +129,9 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          name: name.trim() || null, 
-          message: message.trim() 
+          name: name.trim() || null,
+          message: message.trim(),
+          wallet: wallet.trim() || null
         }),
       });
       
@@ -157,6 +159,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
       // Clear form on success
       setName('');
       setMessage('');
+      setWallet('');
       
       // Display a random cryptic confirmation message
       const randomIndex = Math.floor(Math.random() * CRYPTIC_MESSAGES.length);
@@ -190,6 +193,20 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
             onChange={(e) => setName(e.target.value)}
             className="w-full terminal-input rounded-sm"
             placeholder="anonymous"
+            disabled={isSubmitting}
+          />
+        </div>
+        <div className="terminal-prompt">
+          <label htmlFor="wallet-input" className="block text-[var(--matrix-text-muted)] text-sm mb-1 font-mono">
+            wallet (optional):
+          </label>
+          <input
+            id="wallet-input"
+            type="text"
+            value={wallet}
+            onChange={(e) => setWallet(e.target.value)}
+            className="w-full terminal-input rounded-sm"
+            placeholder="0x... or bc1..."
             disabled={isSubmitting}
           />
         </div>

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS submissions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT,
   message TEXT NOT NULL,
+  wallet TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
