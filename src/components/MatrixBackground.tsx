@@ -18,7 +18,11 @@ interface Particle {
   opacity: number;
 }
 
-const MatrixBackground: React.FC = () => {
+interface MatrixBackgroundProps {
+  transparent?: boolean;
+}
+
+const MatrixBackground: React.FC<MatrixBackgroundProps> = ({ transparent = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number | null>(null);
   
@@ -96,11 +100,16 @@ const MatrixBackground: React.FC = () => {
     
     // Animation function
     const animate = () => {
-      // Clear canvas with semi-transparent black for trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (transparent) {
+        // Fully clear for transparent background (no trails)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      } else {
+        // Semi-transparent black for trail effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       
-      // Draw scanlines
+      // Draw scanlines (keep subtle, even on transparent)
       ctx.fillStyle = 'rgba(0, 255, 123, 0.03)';
       for (let i = 0; i < canvas.height; i += 4) {
         ctx.fillRect(0, i, canvas.width, 1);
@@ -162,16 +171,18 @@ const MatrixBackground: React.FC = () => {
         }
       });
       
-      // Draw vignette effect
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, 0,
-        canvas.width / 2, canvas.height / 2, canvas.width / 1.5
-      );
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Vignette only when not transparent
+      if (!transparent) {
+        const gradient = ctx.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, 0,
+          canvas.width / 2, canvas.height / 2, canvas.width / 1.5
+        );
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       
       // Continue animation
       animationFrameRef.current = requestAnimationFrame(animate);
@@ -200,7 +211,7 @@ const MatrixBackground: React.FC = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 -z-10 pointer-events-none"
-      style={{ backgroundColor: 'black' }}
+      style={{ backgroundColor: transparent ? 'transparent' : 'black' }}
       aria-hidden="true"
     />
   );
